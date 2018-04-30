@@ -1,15 +1,44 @@
 body {
 	margin: 0 !important;
+	background: ghostwhite;
 }
-.websiteBtn {
-	margin-bottom: 10px !important;
+
+#app {
+	margin-top: 1em;
 }
-#mangas {
-	margin-top: 20px;
+
+#app .segment {
+	padding: 2em;
 }
+
+#search-segment {
+
+}
+
+#results-segment {
+	margin-bottom: 3em;
+}
+
+#results-segment .segment:not(:first-child) {
+	min-height: 450px;
+}
+
+#movies-list .list .item .description {
+	margin-top: 0.5em;
+	margin-left: 1em;
+}
+
+#movies-list .list a b {
+	color: red;
+}
+
+#movie-segment {
+	margin-bottom: 3em;
+}
+
 #btn-back-to-top {
 	position: fixed;
-    bottom: 2%;
-    right: 1%;
-    display: none;
+	bottom: 2%;
+	right: 1%;
+	display: none;
 }

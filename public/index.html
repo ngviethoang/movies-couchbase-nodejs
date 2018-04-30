@@ -8,26 +8,103 @@
 	<link rel="stylesheet" href="css/style.css">
 
 </head>
-<body class="ui segment">
+<body>
 	<div id="app" class="ui container">
-
-		<div id="movies">
-			<div class="ui massive text loader" id="movies-loader">Loading</div>
-				<div class="ui massive list">
-					<div class="item" v-for="(movie, index) in movies">
-						<div class="content">
-							<a class="header" target="_blank" href="">
-								{{ movie.title }}
-							</a>
-							<div class="description">
-								Release Year: <a href="">{{ movie.r_year }}</a>
+		<div id="search-segment" class="ui segment">
+			<div class="ui huge search">
+				<div class="ui fluid icon input">
+					<input @keyup.enter="searchMovies($event)" autofocus class="prompt" name="query" placeholder="Tìm kiếm..." type="text">
+					<i class="search icon"></i>
+				</div>
+			</div>
+		</div>
+		<div id="results-segment" v-show="searchQuery !== null">
+			<div class="ui grid">
+				<div class="four wide column">
+					<div class="ui segment">
+						<h4	class="ui header">Kết quả</h4>
+						<div>
+							{{ movies.length }} bộ phim
+						</div>
+					</div>
+				</div>
+				<div class="twelve wide column">
+					<div class="ui segment" id="movies-list">
+						<div style="float: right">
+							Xem
+							<div class="ui selection compact dropdown">
+								<input name="limit" type="hidden">
+								<i class="dropdown icon"></i>
+								<div class="default text">10</div>
+								<div class="menu">
+									<div class="item" data-value="10">10</div>
+									<div class="item" data-value="25">25</div>
+									<div class="item" data-value="50">50</div>
+									<div class="item" data-value="100">100</div>
+								</div>
+							</div>
+							mục
+						</div>
+						<h2 class="ui header" style="margin-top: 2px">
+							<span v-if="searchQuery ===''">Danh sách phim</span>
+							<span v-else>Tìm kiếm phim với Tiêu đề là "{{ searchQuery }}"</span>
+						</h2>
+						<div class="ui huge list">
+							<div class="item" v-for="(movie, index) in movies">
+								<div class="content">
+									{{ index + 1 }}. <a @click="showMovie(movie)" v-html="movie.title" href="#"></a>
+									<div class="description">
+										<p>Năm sản xuất: {{ movie.r_year }}</p>
+									</div>
+								</div>
+								<div class="ui divider"></div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+		<div id="movie-segment" class="ui hidden clearing transition segment">
+			<div @click="toggleSegments" class="ui button" style="float: right"><i class="home icon"></i> Home</div>
+			<h2 class="ui header" style="margin-top: 2px">Thông tin phim</h2>
+			<div class="content">
+				<p>Tiêu đề: {{ movie.title }}</p>
+				<p>Năm sản xuất: {{ movie.r_year }}</p>
+				<p v-if="movie.rating !== undefined && movie.rating !== null">
+					Rating: <i v-for="i of Math.round(movie.rating)" class="yellow star icon"></i> ({{ Math.round(movie.rating * 100) / 100 }})
+				</p>
+				<div class="ui accordion">
+					<div class="title">
+						<i class="dropdown icon"></i>
+						Số người dùng đánh giá: {{ movie.customers.length }}
+					</div>
+					<div class="content">
+						<table id="customers-table" class="ui compact small table">
+							<thead>
+								<tr>
+									<th class="single line">#</th>
+									<th class="single line">Tên</th>
+									<th class="single line">Địa chỉ</th>
+									<th>Rating</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr v-for="(customer, index) of movie.customers">
+									<td>{{ index + 1 }}</td>
+									<td>{{ customer.name }}</td>
+									<td>{{ customer.address }}</td>
+									<td class="single line"><i v-for="i of Math.round(customer.r)" class="yellow star icon"></i></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
+	<button class="circular ui icon secondary basic button big" id="btn-back-to-top">
+		<i class="chevron up icon"></i>
+	</button>
 
 	<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js'></script>
