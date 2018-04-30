@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+	<meta charset="utf-8">
+	<title>Movies</title>
+
+	<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css'>
+	<link rel="stylesheet" href="css/style.css">
+
+</head>
+<body class="ui segment">
+	<div id="app" class="ui container">
+
+		<div id="movies">
+			<div class="ui massive text loader" id="movies-loader">Loading</div>
+				<div class="ui massive list">
+					<div class="item" v-for="(movie, index) in movies">
+						<div class="content">
+							<a class="header" target="_blank" href="">
+								{{ movie.title }}
+							</a>
+							<div class="description">
+								Release Year: <a href="">{{ movie.r_year }}</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.2.4/vue.min.js'></script>
+    <script src='https://unpkg.com/axios/dist/axios.min.js'></script>
+	<script src="js/script.js"></script>
+</body>
+</html>
