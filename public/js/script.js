@@ -82,9 +82,12 @@ $(document).ready(() => {
 				}.bind(this))
 			},
             showMovie(movie) {
+            	this.$loading.addClass('loading');
+
                 $.getJSON('api/movie/' + movie.id, function (res) {
 					this.movie = res.movie;
 
+					this.$loading.removeClass('loading');
 					this.toggleSegments()
                 }.bind(this))
 			},
