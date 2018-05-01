@@ -91,7 +91,7 @@
 								<div class="content">
 									{{ ($refs.pagination.currentPage-1) * pagination.pageSize + index + 1 }}. <a @click="showMovie(movie)" v-html="movie.title" href="#"></a>
 									<div class="description">
-										<p>ID: {{ movie.id }} | Năm sản xuất: {{ movie.r_year !== null ? movie.r_year : 'Không xác định' }}</p>
+										<p>ID: <span :class="{'desc-bold': searchBy === 'ID'}">{{ movie.id }}</span> | Năm sản xuất: <span :class="{'desc-bold': searchBy === 'Năm sản xuất'}">{{ movie.r_year !== null ? movie.r_year : 'Không xác định' }}</span></p>
 									</div>
 								</div>
 								<div class="ui divider"></div>

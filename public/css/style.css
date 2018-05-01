@@ -42,3 +42,8 @@ body {
 	right: 1%;
 	display: none;
 }
+
+.desc-bold {
+	font-weight: bolder;
+	color: red;
+}
