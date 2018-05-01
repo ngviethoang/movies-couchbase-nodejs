@@ -12,22 +12,25 @@ app.get('/', (req, res) => res.render('index'));
 
 app.get('/api/movies', async (req, res) => {
 	let query = req.query.q; //Search query
+	let field = req.query.field; //Search field: title, id, r_year
 	let limit = req.query.limit; //Page size
 	let page = req.query.page; //Page number
+	let orderBy = req.query.orderBy; //Order by (field, asc/desc)
 
-	let movies = await couchbase.getMovies(query, limit, page);
+	let movies = await couchbase.getMovies(field, query, orderBy, limit, page);
 
-	res.json({movies})
+	res.json(movies)
 });
 
 app.get('/api/movie/:id', async (req, res) => {
 	let id = req.params.id;
 
     //Customers list
-	let c_limit = req.query.c_limit;
-	let c_page = req.query.c_page;
+	let cLimit = req.query.cLimit;
+	let cPage = req.query.cPage;
+	let cOrderBy = req.query.cOrderBy;
 
-    let movie = await couchbase.getMovie(id, c_limit, c_page);
+    let movie = await couchbase.getMovie(id, cOrderBy, cLimit, cPage);
 
     res.json({movie})
 });

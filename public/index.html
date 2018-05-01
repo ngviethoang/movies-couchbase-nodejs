@@ -11,10 +11,23 @@
 <body>
 	<div id="app" class="ui container">
 		<div id="search-segment" class="ui segment">
-			<div class="ui huge search">
-				<div class="ui fluid icon input">
+			<div class="ui big search" style="display: inline-block;">
+				<div class="ui icon input" style="min-width: 800px">
 					<input @keyup.enter="searchMovies($event)" autofocus class="prompt" name="query" placeholder="Tìm kiếm..." type="text">
 					<i class="search icon"></i>
+				</div>
+			</div>
+			<div style="float: right; margin-top: 0.25em">
+				Tìm kiếm theo
+				<div class="ui compact selection dropdown">
+					<input name="searchBy" type="hidden">
+					<i class="dropdown icon"></i>
+					<div class="text">Tiêu đề</div>
+					<div class="menu">
+						<div class="item" data-value="title">Tiêu đề</div>
+						<div class="item" data-value="r_year">Năm sản xuất</div>
+						<div class="item" data-value="id">ID</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -24,13 +37,18 @@
 					<div class="ui segment">
 						<h4	class="ui header">Kết quả</h4>
 						<div>
-							{{ movies.length }} bộ phim
+							{{ totalResult }} bộ phim
 						</div>
 					</div>
 				</div>
 				<div class="twelve wide column">
 					<div class="ui segment" id="movies-list">
-						<div style="float: right">
+						<h2 class="ui header" style="margin-top: 2px">
+							<span v-if="searchQuery ===''">Danh sách phim</span>
+							<span v-else>Tìm kiếm phim với {{ searchBy }} là "{{ searchQuery }}"</span>
+						</h2>
+						<!--<div class="ui divider"></div>-->
+						<div>
 							Xem
 							<div class="ui selection compact dropdown">
 								<input name="limit" type="hidden">
@@ -44,21 +62,43 @@
 								</div>
 							</div>
 							mục
+							<div style="float: right">
+								Sắp xếp theo
+								<div class="ui compact selection dropdown">
+									<input name="orderByField" type="hidden">
+									<i class="dropdown icon"></i>
+									<div class="text">Tiêu đề</div>
+									<div class="menu">
+										<div class="item" data-value="title">Tiêu đề</div>
+										<div class="item" data-value="r_year">Năm sản xuất</div>
+										<div class="item" data-value="id">ID</div>
+									</div>
+								</div>
+								<div class="ui compact selection dropdown">
+									<input name="orderByAsc" type="hidden">
+									<i class="dropdown icon"></i>
+									<div class="text">Giảm dần</div>
+									<div class="menu">
+										<div class="item" data-value="desc">Giảm dần</div>
+										<div class="item" data-value="asc">Tăng dần</div>
+									</div>
+								</div>
+							</div>
 						</div>
-						<h2 class="ui header" style="margin-top: 2px">
-							<span v-if="searchQuery ===''">Danh sách phim</span>
-							<span v-else>Tìm kiếm phim với Tiêu đề là "{{ searchQuery }}"</span>
-						</h2>
-						<div class="ui huge list">
+						<div class="ui divider"></div>
+						<div class="ui big list">
 							<div class="item" v-for="(movie, index) in movies">
 								<div class="content">
-									{{ index + 1 }}. <a @click="showMovie(movie)" v-html="movie.title" href="#"></a>
+									{{ ($refs.pagination.currentPage-1) * pagination.pageSize + index + 1 }}. <a @click="showMovie(movie)" v-html="movie.title" href="#"></a>
 									<div class="description">
-										<p>Năm sản xuất: {{ movie.r_year }}</p>
+										<p>ID: {{ movie.id }} | Năm sản xuất: {{ movie.r_year !== null ? movie.r_year : 'Không xác định' }}</p>
 									</div>
 								</div>
 								<div class="ui divider"></div>
 							</div>
+						</div>
+						<div style="text-align: center">
+							<pagination ref="pagination" :total="pagination.total" :page-size="pagination.pageSize" :callback="pageChanged" :options="pagination.options"></pagination>
 						</div>
 					</div>
 				</div>
@@ -93,7 +133,7 @@
 									<td>{{ index + 1 }}</td>
 									<td>{{ customer.name }}</td>
 									<td>{{ customer.address }}</td>
-									<td class="single line"><i v-for="i of Math.round(customer.r)" class="yellow star icon"></i></td>
+									<td class="single line"><i v-for="i of Math.round(customer.rating)" class="yellow star icon"></i></td>
 								</tr>
 							</tbody>
 						</table>
@@ -110,6 +150,7 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.2.4/vue.min.js'></script>
     <script src='https://unpkg.com/axios/dist/axios.min.js'></script>
+    <script src="js/vuejs-pagination-semantic-ui.js"></script>
 	<script src="js/script.js"></script>
 </body>
 </html>
