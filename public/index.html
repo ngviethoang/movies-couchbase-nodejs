@@ -12,7 +12,7 @@
 	<div id="app" class="ui container">
 		<div id="search-segment" class="ui segment">
 			<div class="ui big search" style="display: inline-block;">
-				<div class="ui icon input" style="min-width: 800px">
+				<div class="ui icon input" style="min-width: 600px">
 					<input @keyup.enter="searchMovies($event)" autofocus class="prompt" name="query" placeholder="Tìm kiếm..." type="text">
 					<i class="search icon"></i>
 				</div>
@@ -29,6 +29,16 @@
 						<div class="item" data-value="id">ID</div>
 					</div>
 				</div>
+				trong DBMS
+				<div class="ui compact selection dropdown">
+					<input name="dbms" type="hidden">
+					<i class="dropdown icon"></i>
+					<div class="text">Couchbase</div>
+					<div class="menu">
+						<div class="item" data-value="Couchbase">Couchbase</div>
+						<div class="item" data-value="MySQL">MySQL</div>
+					</div>
+				</div>
 			</div>
 		</div>
 		<div id="results-segment" v-show="searchQuery !== null">
@@ -36,9 +46,8 @@
 				<div class="four wide column">
 					<div class="ui segment">
 						<h4	class="ui header">Kết quả</h4>
-						<div>
-							{{ totalResult }} bộ phim
-						</div>
+						<p>{{ totalResult }} bộ phim</p>
+						<p v-if="metrics !== null">Execution time: {{ metrics.executionTime }}</p>
 					</div>
 				</div>
 				<div class="twelve wide column">
@@ -135,6 +144,30 @@
 									<td>{{ customer.address }}</td>
 									<td class="single line"><i v-for="i of Math.round(customer.rating)" class="yellow star icon"></i></td>
 								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="ui accordion">
+					<div class="title">
+						<i class="dropdown icon"></i>
+						Query Metrics
+					</div>
+					<div class="content">
+						<table id="metrics-table" class="ui compact table">
+							<thead>
+							<tr>
+								<th class="single line">Table</th>
+								<th class="single line">Query</th>
+								<th class="single line">Execution Time</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr v-for="(metric, key) of movieMetrics">
+								<td>{{ key }}</td>
+								<td>{{ metric.query }}</td>
+								<td class="single line">{{ metric.executionTime }}</td>
+							</tr>
 							</tbody>
 						</table>
 					</div>

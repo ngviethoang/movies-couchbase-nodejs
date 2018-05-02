@@ -18,6 +18,8 @@ $(document).ready(() => {
 		data: {
 			movies: [],
 			totalResult: 0,
+			metrics: null, //search movies query metrics,
+			movieMetrics: null, //movie metrics
 			searchQuery: null,
 			searchBy: '',
             $loading: null,
@@ -39,7 +41,7 @@ $(document).ready(() => {
 			$('.ui.dropdown').dropdown();
             $('.ui.accordion').accordion();
 
-            $('input[name=limit], input[name=searchBy], input[name=orderByField], input[name=orderByAsc]').change(function () {
+            $('.dropdown input').change(function () {
 				this.searchMovies()
             }.bind(this))
 		},
@@ -66,9 +68,14 @@ $(document).ready(() => {
 				let limit = $('input[name=limit]').val();
                 limit = limit !== '' ? limit : 10;
 
-				$.getJSON('api/couchbase/movies', {q: this.searchQuery, field: searchBy, orderBy, limit, page: page - 1 }, function (res) {
+                let dbms = $('input[name=dbms]').val().toLowerCase();
+                if(dbms === '')
+                	dbms = 'couchbase';
+
+				$.getJSON(`api/${dbms}/movies`, {q: this.searchQuery, field: searchBy, orderBy, limit, page: page - 1 }, function (res) {
 					this.movies = res.movies;
 					this.totalResult = res.total;
+					this.metrics = res.metrics;
 
 					//Change pagination
 					this.pagination.total = this.totalResult;
@@ -84,8 +91,13 @@ $(document).ready(() => {
             showMovie(movie) {
             	this.$loading.addClass('loading');
 
-                $.getJSON('api/couchbase/movie/' + movie.id, function (res) {
+                let dbms = $('input[name=dbms]').val().toLowerCase();
+                if(dbms === '')
+                    dbms = 'couchbase';
+
+                $.getJSON(`api/${dbms}/movie/` + movie.id, function (res) {
 					this.movie = res.movie;
+					this.movieMetrics = res.metrics;
 
 					this.$loading.removeClass('loading');
 					this.toggleSegments()

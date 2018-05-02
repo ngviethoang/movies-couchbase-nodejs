@@ -33,7 +33,7 @@ app.get('/api/couchbase/movie/:id', async (req, res) => {
 
     let movie = await couchbase.getMovie(id, cOrderBy, cLimit, cPage);
 
-    res.json({movie})
+    res.json(movie)
 });
 
 app.get('/api/mysql/movies', async (req, res) => {
@@ -58,7 +58,7 @@ app.get('/api/mysql/movie/:id', async (req, res) => {
 
     let movie = await mysql.getMovie(id, cOrderBy, cLimit, cPage);
 
-    res.json({movie})
+    res.json(movie)
 });
 
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
