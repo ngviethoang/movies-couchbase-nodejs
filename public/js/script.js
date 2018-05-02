@@ -66,7 +66,7 @@ $(document).ready(() => {
 				let limit = $('input[name=limit]').val();
                 limit = limit !== '' ? limit : 10;
 
-				$.getJSON('api/movies', {q: this.searchQuery, field: searchBy, orderBy, limit, page: page - 1 }, function (res) {
+				$.getJSON('api/couchbase/movies', {q: this.searchQuery, field: searchBy, orderBy, limit, page: page - 1 }, function (res) {
 					this.movies = res.movies;
 					this.totalResult = res.total;
 
@@ -84,7 +84,7 @@ $(document).ready(() => {
             showMovie(movie) {
             	this.$loading.addClass('loading');
 
-                $.getJSON('api/movie/' + movie.id, function (res) {
+                $.getJSON('api/couchbase/movie/' + movie.id, function (res) {
 					this.movie = res.movie;
 
 					this.$loading.removeClass('loading');

@@ -1,5 +1,6 @@
 let express = require('express');
 let couchbase = require('./lib/couchbase');
+let mysql = require('./lib/mysql');
 let path = require('path');
 let app = express();
 
@@ -10,7 +11,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => res.render('index'));
 
-app.get('/api/movies', async (req, res) => {
+app.get('/api/couchbase/movies', async (req, res) => {
 	let query = req.query.q; //Search query
 	let field = req.query.field; //Search field: title, id, r_year
 	let limit = req.query.limit; //Page size
@@ -22,7 +23,7 @@ app.get('/api/movies', async (req, res) => {
 	res.json(movies)
 });
 
-app.get('/api/movie/:id', async (req, res) => {
+app.get('/api/couchbase/movie/:id', async (req, res) => {
 	let id = req.params.id;
 
     //Customers list
@@ -31,6 +32,31 @@ app.get('/api/movie/:id', async (req, res) => {
 	let cOrderBy = req.query.cOrderBy;
 
     let movie = await couchbase.getMovie(id, cOrderBy, cLimit, cPage);
+
+    res.json({movie})
+});
+
+app.get('/api/mysql/movies', async (req, res) => {
+    let query = req.query.q; //Search query
+    let field = req.query.field; //Search field: title, id, r_year
+    let limit = req.query.limit; //Page size
+    let page = req.query.page; //Page number
+    let orderBy = req.query.orderBy; //Order by (field, asc/desc)
+
+    let movies = await mysql.getMovies(field, query, orderBy, limit, page);
+
+    res.json(movies)
+});
+
+app.get('/api/mysql/movie/:id', async (req, res) => {
+    let id = req.params.id;
+
+    //Customers list
+    let cLimit = req.query.cLimit;
+    let cPage = req.query.cPage;
+    let cOrderBy = req.query.cOrderBy;
+
+    let movie = await mysql.getMovie(id, cOrderBy, cLimit, cPage);
 
     res.json({movie})
 });
