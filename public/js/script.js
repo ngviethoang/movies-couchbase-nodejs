@@ -46,8 +46,8 @@ $(document).ready(() => {
             }.bind(this))
 		},
 		methods: {
-			searchMovies(e, page = 1) {
-				this.searchQuery = e !== undefined ? $(e.target).val() : $('input[name=query]').val();
+			searchMovies(page = 1) {
+				this.searchQuery = $('input[name=query]').val();
 
 				let searchBy = $('input[name=searchBy]').val();
 				if(searchBy === '')
@@ -72,7 +72,7 @@ $(document).ready(() => {
                 if(dbms === '')
                 	dbms = 'couchbase';
 
-				$.getJSON(`api/${dbms}/movies`, {q: this.searchQuery, field: searchBy, orderBy, limit, page: page - 1 }, function (res) {
+				$.getJSON(`api/${dbms}/movies`, {q: this.searchQuery, field: searchBy, orderBy, limit, page}, function (res) {
 					this.movies = res.movies;
 					this.totalResult = res.total;
 					this.metrics = res.metrics;
@@ -108,7 +108,7 @@ $(document).ready(() => {
                 $('#search-segment, #results-segment').transition('fade up');
 			},
             pageChanged (page) {
-                this.searchMovies(undefined, page)
+                this.searchMovies(page)
             }
 		},
 		computed: {
