@@ -132,6 +132,7 @@
 							<thead>
 								<tr>
 									<th class="single line">#</th>
+									<th class="single line">Id</th>
 									<th class="single line">Tên</th>
 									<th class="single line">Địa chỉ</th>
 									<th>Rating</th>
@@ -140,6 +141,7 @@
 							<tbody>
 								<tr v-for="(customer, index) of movie.customers">
 									<td>{{ index + 1 }}</td>
+									<td>{{ customer.id }}</td>
 									<td>{{ customer.name }}</td>
 									<td>{{ customer.address }}</td>
 									<td class="single line"><i v-for="i of Math.round(customer.rating)" class="yellow star icon"></i></td>
