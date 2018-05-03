@@ -14,7 +14,7 @@
 			<div class="ui big search" style="display: inline-block;">
 				<div class="ui icon input" style="min-width: 600px">
 					<input @keyup.enter="searchMovies()" autofocus class="prompt" name="query" placeholder="Tìm kiếm phim..." type="text">
-					<i class="search icon"></i>
+					<i class="search icon" @click="searchMovies()"></i>
 				</div>
 			</div>
 			<div style="float: right; margin-top: 0.25em">
