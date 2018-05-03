@@ -47,7 +47,10 @@
 					<div class="ui segment">
 						<h4	class="ui header">Kết quả</h4>
 						<p>{{ totalResult }} bộ phim</p>
-						<p v-if="metrics !== null">Execution time: {{ metrics.executionTime }}</p>
+						<div v-if="metrics !== null">
+							<p>Query: {{ metrics.query }}</p>
+							<p>Execution time: {{ metrics.executionTime }}</p>
+						</div>
 					</div>
 				</div>
 				<div class="twelve wide column">
