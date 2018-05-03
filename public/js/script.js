@@ -21,6 +21,7 @@ $(document).ready(() => {
 			metrics: null, //search movies query metrics,
 			movieMetrics: null, //movie metrics
 			searchQuery: null,
+			dbms: 'Couchbase',
 			searchBy: '',
             $loading: null,
 			pagination: {
@@ -68,9 +69,11 @@ $(document).ready(() => {
 				let limit = $('input[name=limit]').val();
                 limit = limit !== '' ? limit : 10;
 
-                let dbms = $('input[name=dbms]').val().toLowerCase();
+                let dbms = $('input[name=dbms]').val();
                 if(dbms === '')
-                	dbms = 'couchbase';
+                	dbms = this.dbms;
+                else
+                    this.dbms = dbms;
 
 				$.getJSON(`api/${dbms}/movies`, {q: this.searchQuery, field: searchBy, orderBy, limit, page}, function (res) {
 					this.movies = res.movies;
@@ -91,9 +94,11 @@ $(document).ready(() => {
             showMovie(movie) {
             	this.$loading.addClass('loading');
 
-                let dbms = $('input[name=dbms]').val().toLowerCase();
+                let dbms = $('input[name=dbms]').val();
                 if(dbms === '')
-                    dbms = 'couchbase';
+                    dbms = this.dbms;
+                else
+                	this.dbms = dbms;
 
                 $.getJSON(`api/${dbms}/movie/` + movie.id, function (res) {
 					this.movie = res.movie;

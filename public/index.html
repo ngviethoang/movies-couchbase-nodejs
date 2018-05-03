@@ -154,20 +154,21 @@
 						Query Metrics
 					</div>
 					<div class="content">
+						<p>DBMS: {{ dbms }}</p>
 						<table id="metrics-table" class="ui compact table">
 							<thead>
-							<tr>
-								<th class="single line">Table</th>
-								<th class="single line">Query</th>
-								<th class="single line">Execution Time</th>
-							</tr>
+								<tr>
+									<th class="single line">Table</th>
+									<th class="single line">Query</th>
+									<th class="single line">Execution Time</th>
+								</tr>
 							</thead>
 							<tbody>
-							<tr v-for="(metric, key) of movieMetrics">
-								<td>{{ key }}</td>
-								<td>{{ metric.query }}</td>
-								<td class="single line">{{ metric.executionTime }}</td>
-							</tr>
+								<tr v-for="(metric, key) of movieMetrics">
+									<td>{{ key }}</td>
+									<td>{{ metric.query }}</td>
+									<td class="single line">{{ metric.executionTime }}</td>
+								</tr>
 							</tbody>
 						</table>
 					</div>
